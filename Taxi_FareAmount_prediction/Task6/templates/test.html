@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_a9505b1168b66c1f9b82cc6b88357c90 {
+                    position: relative;
+                    width: 90.0%;
+                    height: 20.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+    </style>
+    <meta charset="UTF-8"/>
+    <title>Trip pricing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/6d56012fea.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #E6E6FA; /* Lavender background */
+        }
+        .container {
+            font-family: "Montserrat", sans-serif;
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+        h1 {
+            font-weight: 900;
+            font-size: 40px;
+            margin-bottom: 30px;
+            color: #8B008B; /* Purple color for the heading */
+        }
+        .form-section {
+            width: 70%;
+        }
+        .result-section {
+            width: 20%;
+        }
+        i {
+            color: 	#663399; /* Purple color for icons */
+        }
+        input[type="number"] {
+            height: 50px;
+            width: 90%;
+            font-size: 15px;
+            border-radius: 10px;
+            -moz-appearance: textfield;
+        }
+        #ans {
+            font-weight: 700;
+            font-size: 28px;
+            color: #562A56; /* Purple color for the result */
+        }
+        .result {
+            font-size: 28px;
+            color:#8B008B;
+        }
+        .result-content p {
+            margin-top: 30px;
+        }
+        label {
+            font-weight: 500;
+            font-size: 24px;
+            color: #8B008B; /* Purple color for labels */
+        }
+        input[type="radio"] {
+            margin-right: 20px;
+        }
+        .btn-primary {
+            margin-top: 20px;
+            font-weight: 700;
+            background-color:#8B008B; /* Purple color for the submit button */
+            border: none; /* Remove default border */
+            font-size: 28px;
+            margin-left: 70%;
+        }
+        .btn-primary:hover {
+            background-color: 	#DA70D6; /* Darker purple on hover */
+        }
+        #Traffic_Condition{
+            margin: 10px;
+            font-size: 20px;
+            color: #8B008B;
+        }
+        h2{
+            font-size: 30px;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form class="form-floating" action=""  method="POST">
+        {% csrf_token %}
+        <h1>Fare Amount prediction for trips <i class="fa-solid fa-hotel"></i></h1>
+        <!--<div class="mb-3">
+            <label for="hour" class="form-label"><strong>Hour:</strong></label>
+            <input type="number" class="form-control" id="hour" required placeholder="Enter hour" name="hour"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="day" class="form-label"><strong>Day:</strong></label>
+            <input type="number" class="form-control" id="day" required placeholder="Enter day" name="day"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="weekday" class="form-label"><strong>Weekday:</strong></label>
+            <input type="number" class="form-control" id="weekday" required placeholder="Enter weekday" name="weekday"/>
+        </div>
+        <div class="mb-3">
+            <label for="month" class="form-label"><strong>Month:</strong></label>
+            <input type="number" class="form-control" id="month" required placeholder="Enter month" name="month"/>
+        </div>
+        <hr>
+        <div>
+            <label for="year" class="form-label"><strong>Year:</strong></label>
+            <input type="number" class="form-control" id="year" required placeholder="Enter year" name="year"/>
+        </div>-->
+        <hr>
+        <div class="mb-3">
+            <label for="Traffic_Condition" class="form"><strong>Traffic_Condition:</strong></label>
+                <select id="Traffic_Condition" name="Traffic_Condition">
+                    <option value="Congested Traffic">Congested Traffic</option>
+                    <option value="Flow Traffic">Flow Traffic</option>
+                    <option value="Dense Traffic">Dense Traffic</option>
+                </select><br><br>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="pickup_longitude" class="form-label"><strong>Pickup_longitude:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="pickup_longitude" required placeholder="Enter pickup_longitude" name="pickup_longitude" value='{{ lng }}'/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="pickup_latitude" class="form-label"><strong>Pickup_latitude:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="pickup_latitude" required placeholder="Enter pickup_latitude" name="pickup_latitude"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="dropoff_longitude" class="form-label"><strong>Dropoff_longitude:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="dropoff_longitude" required placeholder="Enter dropoff_longitude" name="dropoff_longitude"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="dropoff_latitude" class="form-label"><strong>Dropoff_latitude:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="dropoff_latitude" required placeholder="Enter dropoff_latitude" name="dropoff_latitude"/>
+        </div>
+        <hr>
+        <!--<div class="mb-3">
+            <label for="distance" class="form-label"><strong>Distance:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="distance" required placeholder="Enter distance" name="distance"/>
+        </div>-->
+        <hr>
+        <div class="mb-3">
+            <label for="bearing" class="form-label"><strong>Bearing:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="bearing" required placeholder="Enter bearing" name="bearing"/>
+        </div>
+        <hr>
+        <div class="folium-map" id="map_a9505b1168b66c1f9b82cc6b88357c90"></div>
+        <hr>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <div class="result result-section">
+        <h2>Result <i class="fa-solid fa-scroll"></i></h2>
+        <div class="result-content">
+            <p>Fare amount: <br><span id="ans">{{ result }}</span></p>
+        </div>
+    </div>
+</div>
+<script>
+    
+            
+            var map_a9505b1168b66c1f9b82cc6b88357c90 = L.map(
+                "map_a9505b1168b66c1f9b82cc6b88357c90",
+                {
+                    center: [20.0, 0.0],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 2,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_e45a6ea2a9f29536fa9605b89cbb9fa0 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_e45a6ea2a9f29536fa9605b89cbb9fa0.addTo(map_a9505b1168b66c1f9b82cc6b88357c90);
+
+                function calculateDistance(lat1, lon1, lat2, lon2) {
+                  const R = 6371; // Radius of the Earth in kilometers
+                  const dLat = deg2rad(lat2 - lat1);
+                  const dLon = deg2rad(lon2 - lon1);
+                  const a =
+                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                  const distance = R * c;   
+                
+                  return distance;
+                }
+
+                function deg2rad(deg) {
+                  return deg * (Math.PI / 180);   
+                
+                }
+                function newMarker(e){
+                    var new_mark = L.marker().setLatLng(e.latlng).addTo(map_a9505b1168b66c1f9b82cc6b88357c90);
+                    new_mark.dragging.enable();
+                    new_mark.on('dblclick', function(e){ map_a9505b1168b66c1f9b82cc6b88357c90.removeLayer(e.target)});
+                    var lat = e.latlng.lat.toFixed(4),
+                        lng = e.latlng.lng.toFixed(4);
+                    new_mark.bindPopup("Latitude: " + lat + "<br>Longitude: " + lng );
+                    //document.getElementById("pickup_longitude").value = lng;
+                    //document.getElementById("pickup_latitude").value = lat;
+                    //if (not document.getElementById("pickup_longitude").value){
+                    //    document.getElementById("pickup_longitude").value = lng;
+                    //    document.getElementById("pickup_latitude").value = lat;}
+                    //else{
+                    //    document.getElementById("dropoff_longitude").value = lng;
+                    //    document.getElementById("dropoff_latitude").value = lat;}
+                    const pickupLongitudeInput = document.getElementById("pickup_longitude");
+                    const pickupLatitudeInput = document.getElementById("pickup_latitude");
+                    const dropoffLongitudeInput = document.getElementById("dropoff_longitude");
+                    const dropoffLatitudeInput = document.getElementById("dropoff_latitude");
+
+                    if (!pickupLongitudeInput.value) {
+                      pickupLongitudeInput.value = lng;
+                      pickupLatitudeInput.value = lat;
+                    } else {
+                      dropoffLongitudeInput.value = lng;
+                      dropoffLatitudeInput.value = lat;
+                    }
+                    const distance = calculateDistance(pickupLongitudeInput.value,
+                                                        pickupLatitudeInput.value,
+                                                        dropoffLongitudeInput.value,
+                                                        dropoffLatitudeInput.value);
+                    document.getElementById("distance").value = distance;
+                }
+                map_a9505b1168b66c1f9b82cc6b88357c90.on('click', newMarker);
+                
+    
+            tile_layer_e45a6ea2a9f29536fa9605b89cbb9fa0.addTo(map_a9505b1168b66c1f9b82cc6b88357c90);
+</script>
+</body>
+</html>

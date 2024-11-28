@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Trip pricing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/6d56012fea.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #E6E6FA; /* Lavender background */
+        }
+        .container {
+            font-family: "Montserrat", sans-serif;
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+        h1 {
+            font-weight: 900;
+            font-size: 40px;
+            margin-bottom: 30px;
+            color: #8B008B; /* Purple color for the heading */
+        }
+        .form-section {
+            width: 70%;
+        }
+        .result-section {
+            width: 20%;
+        }
+        i {
+            color: 	#663399; /* Purple color for icons */
+        }
+        input[type="number"] {
+            width: 90%;
+            border-radius: 10px;
+            -moz-appearance: textfield;
+        }
+        #ans {
+            font-weight: 700;
+            font-size: 28px;
+            color: #562A56; /* Purple color for the result */
+        }
+        .result {
+            font-size: larger;
+            color:#8B008B;
+        }
+        .result-content p {
+            margin-top: 30px;
+        }
+        label {
+            font-weight: 500;
+            font-size: large;
+            color: #8B008B; /* Purple color for labels */
+        }
+        input[type="radio"] {
+            margin-right: 20px;
+        }
+        .btn-primary {
+            margin-top: 20px;
+            font-weight: 700;
+            background-color:#8B008B; /* Purple color for the submit button */
+            border: none; /* Remove default border */
+        }
+        .btn-primary:hover {
+            background-color: 	#DA70D6; /* Darker purple on hover */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form class="form-floating" action=""  method="POST">
+        {% csrf_token %}
+        <h1>Fare Amount prediction for trips <i class="fa-solid fa-hotel"></i></h1>
+        <div class="mb-3">
+            <label for="hour" class="form-label"><strong>hour:</strong></label>
+            <input type="number" class="form-control" id="hour" required placeholder="Enter hour" name="hour"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="day" class="form-label"><strong>day:</strong></label>
+            <input type="number" class="form-control" id="day" required placeholder="Enter day" name="day"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="weekday" class="form-label"><strong>weekday:</strong></label>
+            <input type="number" class="form-control" id="weekday" required placeholder="Enter weekday" name="weekday"/>
+        </div>
+        <div class="mb-3">
+            <label for="month" class="form-label"><strong>month:</strong></label>
+            <input type="number" class="form-control" id="month" required placeholder="Enter month" name="month"/>
+        </div>
+        <hr>
+        <div>
+            <label for="year" class="form-label"><strong>year:</strong></label>
+            <input type="number" class="form-control" id="year" required placeholder="Enter year" name="year"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="Traffic_Condition" class="form"><strong>Traffic_Condition:</strong></label>
+                <select id="Traffic_Condition" name="Traffic_Condition">
+                    <option value="Congested Traffic">Congested Traffic</option>
+                    <option value="Flow Traffic">Flow Traffic</option>
+                    <option value="Dense Traffic">Dense Traffic</option>
+                </select><br><br>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="pickup_longitude" class="form-label"><strong>pickup_longitude:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="pickup_longitude" required placeholder="Enter pickup_longitude" name="pickup_longitude"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="pickup_latitude" class="form-label"><strong>pickup_latitude:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="pickup_latitude" required placeholder="Enter pickup_latitude" name="pickup_latitude"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="dropoff_longitude" class="form-label"><strong>dropoff_longitude:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="dropoff_longitude" required placeholder="Enter dropoff_longitude" name="dropoff_longitude"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="dropoff_latitude" class="form-label"><strong>dropoff_latitude:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="dropoff_latitude" required placeholder="Enter dropoff_latitude" name="dropoff_latitude"/>
+        </div>
+        <hr>
+        <div class="mb-3">
+            <label for="bearing" class="form-label"><strong>bearing:</strong></label>
+            <input type="number" class="form-control" step="0.000001" id="bearing" required placeholder="Enter bearing" name="bearing"/>
+        </div>
+        <hr>
+        <hr>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <div class="result result-section">
+        <h2>Result <i class="fa-solid fa-scroll"></i></h2>
+        <div class="result-content">
+            <p>Fare amount: <br><span id="ans">{{ result }}</span></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
